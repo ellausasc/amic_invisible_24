@@ -21,7 +21,7 @@
 
         .center-text {
             position: absolute;
-            top: 40%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 24px;
@@ -31,7 +31,7 @@
 
         .center-text-img {
             position: absolute;
-            top: 60%;
+            top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 24px;
@@ -61,16 +61,16 @@
 
     // Links to images and corresponding messages
     const logoData = [
-        { url: 'https://www.siuxpadel.com/wp-content/uploads/2024/03/105956-pro-grip-perforated-x60-blanco-800x1000-vista3.webp', text: 'Overgrips pàdel', width: 200, height: 150 },
-        { url: 'https://allforpadel.com/4295-thickbox_default/adidas-bolas-speed-rx.jpg', text: 'Pilotes de pàdel', width: 200, height: 150},
-        { url: 'https://cdn-icons-png.freepik.com/512/3367/3367305.png', text: 'Algun joc de taula', width: 200, height: 150 },
-        { url: 'https://images.vexels.com/content/194604/preview/school-textbook-flat-icon-17ba8a.png', text: 'Algun llibre', width: 250, height: 150  },
-        { url: 'https://images.vexels.com/content/273182/preview/cute-gift-icon-3305e7.png', text: 'Qualsevol altra cosa', width: 250, height: 150 },
-        { url: 'https://cdn-icons-png.flaticon.com/512/843/843877.png', text: 'Happy socks talla 48 (canya mitjana)', width: 250, height: 150 },
-        { url: 'https://prendalia.es/wp-content/uploads/2023/09/pr-115-camiseta-tecnica-personalizada-fullprint.png', text: 'Samarreta tècnica (talla XXL)', width: 250, height: 150 },
-        { url: 'https://cdn-icons-png.flaticon.com/512/4305/4305461.png', text: 'Samarreta bàsica (talla XXL)', width: 250, height: 150 },
-        { url: 'https://cdn-icons-png.flaticon.com/512/3345/3345402.png', text: 'Pantalons curts d\'esport', width: 250, height: 150 },
-        { url: 'https://acdn.mitiendanube.com/stores/096/009/products/rasayana-camara-mar211-61d6a293fe69e4810e16159979707820-640-0.png', text: 'Corretja de canell per la càmera', width: 250, height: 150 }
+        { url: 'https://www.siuxpadel.com/wp-content/uploads/2024/03/105956-pro-grip-perforated-x60-blanco-800x1000-vista3.webp', text: 'Overgrips pàdel', width: 100, height: 75 },
+        { url: 'https://allforpadel.com/4295-thickbox_default/adidas-bolas-speed-rx.jpg', text: 'Pilotes de pàdel', width: 100, height: 75},
+        { url: 'https://cdn-icons-png.freepik.com/512/3367/3367305.png', text: 'Algun joc de taula', width: 100, height: 75 },
+        { url: 'https://images.vexels.com/content/194604/preview/school-textbook-flat-icon-17ba8a.png', text: 'Algun llibre', width: 100, height: 75  },
+        { url: 'https://images.vexels.com/content/273182/preview/cute-gift-icon-3305e7.png', text: 'Qualsevol altra cosa', width: 100, height: 75 },
+        { url: 'https://cdn-icons-png.flaticon.com/512/843/843877.png', text: 'Happy socks talla 48 (canya mitjana)', width: 100, height: 75 },
+        { url: 'https://prendalia.es/wp-content/uploads/2023/09/pr-115-camiseta-tecnica-personalizada-fullprint.png', text: 'Samarreta tècnica (talla XXL)', width: 100, height: 75 },
+        { url: 'https://cdn-icons-png.flaticon.com/512/4305/4305461.png', text: 'Samarreta bàsica (talla XXL)', width: 100, height: 75 },
+        { url: 'https://cdn-icons-png.flaticon.com/512/3345/3345402.png', text: 'Pantalons curts d\'esport', width: 100, height: 75 },
+        { url: 'https://acdn.mitiendanube.com/stores/096/009/products/rasayana-camara-mar211-61d6a293fe69e4810e16159979707820-640-0.png', text: 'Corretja de canell per la càmera', width: 100, height: 75 }
     ];
 
     // Load all logo images
@@ -84,9 +84,16 @@
     let currentLogoIndex = Math.floor(Math.random() * logoImages.length);
     let currentLogo = logoImages[currentLogoIndex];
     let logoRect = { x: Math.random() * (canvas.width - currentLogo.width), y: Math.random() * (canvas.height - currentLogo.height), width: currentLogo.width, height: currentLogo.height };
-    let dx = 0.5;
-    let dy = 0.5;
-
+   
+    // Set speed based on device type
+   let dx, dy;
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        dx = 0.4; // Slower speed for mobile
+        dy = 0.4;
+    } else {
+        dx = 3.5; // Faster speed for desktop
+        dy = 3.5;
+    }
     // Update the center text with the current logo's text
     function updateCenterText() {
         centerTextElement.textContent = currentLogo.text;
