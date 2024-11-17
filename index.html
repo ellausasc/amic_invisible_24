@@ -31,7 +31,7 @@
 
         .center-text-img {
             position: absolute;
-            top: 60%;
+            top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 24px;
@@ -84,8 +84,8 @@
     let currentLogoIndex = Math.floor(Math.random() * logoImages.length);
     let currentLogo = logoImages[currentLogoIndex];
     let logoRect = { x: Math.random() * (canvas.width - currentLogo.width), y: Math.random() * (canvas.height - currentLogo.height), width: currentLogo.width, height: currentLogo.height };
-    let dx = 1;
-    let dy = 1;
+    let dx = 0.5;
+    let dy = 0.5;
 
     // Update the center text with the current logo's text
     function updateCenterText() {
