@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta amic invisible</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .center-text-img {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="dvdCanvas"></canvas>
+<div class="center-text">N'hi ha 10 de diferents. Col·laciona'ls</div>
+<div id="centerTextImg" class="center-text-img">Loading...</div>
+
+<script>
+    // Get canvas element and context
+    const canvas = document.getElementById('dvdCanvas');
+    const ctx = canvas.getContext('2d');
+    const centerTextElement = document.getElementById('centerTextImg');
+
+    // Set canvas size to full screen
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas(); // Initialize canvas size
+
+    // Links to images and corresponding messages
+    const logoData = [
+        { url: 'https://www.siuxpadel.com/wp-content/uploads/2024/03/105956-pro-grip-perforated-x60-blanco-800x1000-vista3.webp', text: 'Overgrips pàdel', width: 200, height: 150 },
+        { url: 'https://allforpadel.com/4295-thickbox_default/adidas-bolas-speed-rx.jpg', text: 'Pilotes de pàdel', width: 200, height: 150},
+        { url: 'https://cdn-icons-png.freepik.com/512/3367/3367305.png', text: 'Algun joc de taula', width: 200, height: 150 },
+        { url: 'https://images.vexels.com/content/194604/preview/school-textbook-flat-icon-17ba8a.png', text: 'Algun llibre', width: 250, height: 150  },
+        { url: 'https://images.vexels.com/content/273182/preview/cute-gift-icon-3305e7.png', text: 'Qualsevol altra cosa', width: 250, height: 150 },
+        { url: 'https://cdn-icons-png.flaticon.com/512/843/843877.png', text: 'Happy socks talla 48 (canya mitjana)', width: 250, height: 150 },
+        { url: 'https://prendalia.es/wp-content/uploads/2023/09/pr-115-camiseta-tecnica-personalizada-fullprint.png', text: 'Samarreta tècnica (talla XXL)', width: 250, height: 150 },
+        { url: 'https://cdn-icons-png.flaticon.com/512/4305/4305461.png', text: 'Samarreta bàsica (talla XXL)', width: 250, height: 150 },
+        { url: 'https://cdn-icons-png.flaticon.com/512/3345/3345402.png', text: 'Pantalons curts d\'esport', width: 250, height: 150 },
+        { url: 'https://acdn.mitiendanube.com/stores/096/009/products/rasayana-camara-mar211-61d6a293fe69e4810e16159979707820-640-0.png', text: 'Corretja de canell per la càmera', width: 250, height: 150 }
+    ];
+
+    // Load all logo images
+    const logoImages = logoData.map(data => {
+        const img = new Image();
+        img.src = data.url;
+        return { image: img, text: data.text, width: data.width, height: data.height };
+    });
+
+    // Initial logo properties
+    let currentLogoIndex = Math.floor(Math.random() * logoImages.length);
+    let currentLogo = logoImages[currentLogoIndex];
+    let logoRect = { x: Math.random() * (canvas.width - currentLogo.width), y: Math.random() * (canvas.height - currentLogo.height), width: currentLogo.width, height: currentLogo.height };
+    let dx = 3;
+    let dy = 3;
+
+    // Update the center text with the current logo's text
+    function updateCenterText() {
+        centerTextElement.textContent = currentLogo.text;
+    }
+    updateCenterText();
+
+    // Main animation function
+    function animate() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the logo only when fully loaded
+        if (currentLogo.image.complete) {
+            ctx.drawImage(currentLogo.image, logoRect.x, logoRect.y, logoRect.width, logoRect.height);
+        }
+
+        // Move the logo
+        logoRect.x += dx;
+        logoRect.y += dy;
+
+        // Check for collisions with the canvas boundaries
+        if (logoRect.x <= 0 || logoRect.x + logoRect.width >= canvas.width) {
+            dx = -dx;
+            changeLogo();  // Change logo on collision
+        }
+        if (logoRect.y <= 0 || logoRect.y + logoRect.height >= canvas.height) {
+            dy = -dy;
+            changeLogo();  // Change logo on collision
+        }
+
+        // Request the next frame
+        requestAnimationFrame(animate);
+    }
+
+    // Change the logo to a random one
+    function changeLogo() {
+        const newIndex = Math.floor(Math.random() * logoImages.length);
+        currentLogo = logoImages[newIndex];
+        //currentLogo = logoImages[0];
+        logoRect.width = currentLogo.width;
+        logoRect.height = currentLogo.height;
+        updateCenterText();
+    }
+
+    // Start animation
+    animate();
+
+    // Resize the canvas when the window is resized
+    window.addEventListener('resize', () => {
+        resizeCanvas(); // Adjust canvas size on window resize
+    });
+</script>
+
+</body>
+</html>
